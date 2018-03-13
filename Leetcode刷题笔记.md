@@ -138,3 +138,36 @@ class Solution {
 
 
 
+86.对链表分区
+给定一个链表和一个值x，把链表中小于x的数都放到大于等于x的数的左边，并保持原始的相对位置
+如给定 1->4->3->2->5->2   x=3      输出结果为 1->2->2->4->3->5
+思路：1.new两个新链表，一个用来管理所有大于等于x的数，一个用来管理小于x的数。遍历原来的链表时，当当前node.val大于等于x就接在大链表上，当当前node.val小于x，就接在小链表上。
+2.最后把小链表的最后一个接上大链表的第一个，大链表最后一个元数的next设置为null
+
+class Solution {
+    public ListNode partition(ListNode head, int x){
+        //先判断异常条件
+        if ( head == null || head.next == null) return head;
+        
+        //再判断正常条件
+        ListNode smallNode = new ListNode(-1);
+        ListNode bigNode = new ListNode(-1);
+        ListNode originLessHead = smallNode;
+        ListNode originBigHead = bigNode;
+        while(head != null){
+            if ( head.val < x ) {
+                smallNode.next = head;
+                smallNode = smallNode.next;
+            }
+            else{
+                 bigNode.next = head;
+                 bigNode = bigNode.next;
+                }
+            head = head.next;
+        }
+        //让小的队列连接上大的队列，同时让大的队列末尾是null
+        smallNode.next = originBigHead.next;
+        bigNode.next = null;
+        return smallLessHead.next;
+    }
+}
